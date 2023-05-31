@@ -27,8 +27,8 @@ const Alldata = () => {
     })
       .then(res => {
         if (res?.status === 200) {
-          setData(res?.data);
-          // console.log(data);
+          setData(res?.data?.message);
+          console.log(data);
         }
       })
       .catch(err => console.log(err));
@@ -46,6 +46,8 @@ const Alldata = () => {
     })
       .then(res => {
         if (res?.status === 200) {
+          setDepartment('');
+          setDepartmentCode('');
           Alert.alert('Department create sucessfully');
         }
       })
@@ -66,29 +68,48 @@ const Alldata = () => {
         <Text style={{color: 'blue', fontSize: 16, fontWeight: 'bold'}}>
           Department
         </Text>
-        <FlatList
-          data={data}
-          renderItem={item => {
-            console.log(item);
-            return (
-              <View
-                style={{
-                  marginVertical: 10,
-                  height: 30,
-                  backgroundColor: 'red',
-                }}></View>
-            );
-          }}
-        />
-
+        <View style={{flex: 1, padding: 10, marginBottom: 200}}>
+          <FlatList
+            data={data}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => {
+              console.log(item);
+              return (
+                <View
+                  style={{
+                    marginVertical: 5,
+                    // backgroundColor: 'red',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={{color: '#000', fontSize: 14}}>
+                  { `${item.DepartmentID}.`}
+                  </Text>
+                  <Text style={{color: '#000', fontSize: 14}}>
+                    {item.DepartmentCode}
+                  </Text>
+                  <Text style={{color: '#000', fontSize: 14}}>
+                    {item.Department}
+                  </Text>
+                  <Text
+                    style={{color: 'blue', fontSize: 12, fontWeight: 'bold'}}>
+                    {item.Status}
+                  </Text>
+                </View>
+              );
+            }}
+          />
+        </View>
         <View
           style={{
             position: 'absolute',
+            zIndex: 2,
             bottom: 0,
             left: 0,
             right: 0,
             padding: 8,
-            flex: 1,
+            height: 200,
+            backgroundColor: '#fff',
           }}>
           <Text style={{color: 'green', fontSize: 14, fontWeight: '800'}}>
             Create New Department
@@ -108,6 +129,7 @@ const Alldata = () => {
                   borderColor: '#000',
                 }}
                 maxLength={8}
+                defaultValue={departmentCode}
                 onChangeText={txt => setDepartmentCode(txt)}
               />
             </View>
@@ -121,7 +143,8 @@ const Alldata = () => {
                   borderColor: '#000',
                 }}
                 onChangeText={txt => setDepartment(txt)}
-                maxLength={8}
+                maxLength={20}
+                defaultValue={department}
               />
             </View>
           </View>
